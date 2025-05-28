@@ -25,6 +25,7 @@ This is a full-stack Todo Task Management Web Application developed for the Kato
 ### 1. Clone the repository
 
 git clone https://github.com/your-username/Todo_app.git
+
 cd Todo_app
 
 ### 2. Set up environment variables
