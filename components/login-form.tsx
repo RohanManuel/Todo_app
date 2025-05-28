@@ -82,7 +82,7 @@ export function LoginForm() {
     <Card className="w-full max-w-md mx-auto">
       <CardHeader className="text-center">
         <CardTitle>Welcome Back</CardTitle>
-        <CardDescription>Sign in to access your AI-powered task manager</CardDescription>
+        <CardDescription>Sign in to access your task manager</CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
         {error && (
