@@ -56,7 +56,7 @@ You can check out the live deployed version here:
 
 ## 📹 Loom Video  
 A walkthrough and demo of the application can be found here:  
-👉 [Watch on Loom](https://www.loom.com/share/04cb7ee77d284d24be3e8af89390eaf7?sid=1ba4131a-4086-413f-9606-6eee0a305e32)
+👉 [Watch on Loom](https://www.loom.com/share/f507d073214a435895f98a4abae648d6?sid=42d0ea2f-b8db-4def-8f6c-47fe65a53293)
 
 ### 4. Architecture Diagram
 
