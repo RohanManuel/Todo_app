@@ -8,8 +8,8 @@ import { Toaster } from "@/components/ui/toaster"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "AI-Powered Todo Manager",
-  description: "Intelligent task management with AI suggestions and real-time updates",
+  title: "Todo Task Management",
+  description: "Easy task management",
     generator: 'v0.dev'
 }
 
