@@ -255,7 +255,7 @@ export function Dashboard() {
                 <div className="flex items-center justify-between">
                   <div>
                     <CardTitle>Your Tasks</CardTitle>
-                    <CardDescription>Manage your tasks with AI assistance</CardDescription>
+                    <CardDescription>Easily manage and track your tasks</CardDescription>
                   </div>
                   <CreateTaskDialog onTaskCreated={handleTaskCreated}>
                     <Button disabled={!!error}>
