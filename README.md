@@ -31,6 +31,7 @@ cd Todo_app
 ### 2. Set up environment variables
 
 Create a .env file in the folder:
+
 NEXT_PUBLIC_SUPABASE_URL=Your_Url
 
 NEXT_PUBLIC_SUPABASE_ANON_KEY=Your_Key
@@ -59,8 +60,8 @@ A walkthrough and demo of the application can be found here:
 
 ### 4. Architecture Diagram
 
-``
-                 +-----------------------------+
+```plaintext
+                   +-----------------------------+
                    |    User (Browser/Mobile)    |
                    +-------------+---------------+
                                  |
@@ -85,13 +86,11 @@ A walkthrough and demo of the application can be found here:
             +--------------------+--------------------+
             |                                         |
             v                                         v
-            
 +--------------------------+             +-----------------------------+
 |  OAuth Provider (Google, |             | Database (MongoDB / SQL)     |
 |  GitHub, Facebook, etc)  |             | - Users Collection/Table     |
 | - Auth token exchange    |             | - Tasks Collection/Table     |
 +--------------------------+             +-----------------------------+
-
 
                                 |
                                 v
