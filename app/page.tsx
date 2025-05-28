@@ -50,7 +50,7 @@ export default function Home() {
         <div className="max-w-md mx-auto">
           <div className="text-center mb-8">
             <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-2">Todo Task Management</h1>
-            <p className="text-gray-600 dark:text-gray-300">Intelligent task management with AI-powered suggestions</p>
+            <p className="text-gray-600 dark:text-gray-300">Efficient and organized task management.</p>
           </div>
 
           {authError && (
