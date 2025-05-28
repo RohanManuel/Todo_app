@@ -105,4 +105,4 @@ A walkthrough and demo of the application can be found here:
 
 ---
 
-🚀 This project was built for a hackathon conducted by [Katomaran](https://www.katomaran.com).
+🚀 This project was developed as part of a hackathon organized by [Katomaran](https://www.katomaran.com).
