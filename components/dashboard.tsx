@@ -175,7 +175,7 @@ export function Dashboard() {
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
-              <h1 className="text-2xl font-bold">AI Todo Manager</h1>
+              <h1 className="text-2xl font-bold">Todo Task Management</h1>
             </div>
             <div className="flex items-center space-x-4">
               <Button
