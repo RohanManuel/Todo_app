@@ -19,12 +19,6 @@ interface AiSuggestionsPanelProps {
   tasks: Task[]
 }
 
-interface QuickPrompt {
-  icon: React.ReactNode
-  text: string
-  prompt: string
-}
-
 export function AiSuggestionsPanel({ tasks }: AiSuggestionsPanelProps) {
   const [prompt, setPrompt] = useState("")
   const [suggestion, setSuggestion] = useState("")
@@ -32,20 +26,16 @@ export function AiSuggestionsPanel({ tasks }: AiSuggestionsPanelProps) {
   const { toast } = useToast()
 
   const handleGetSuggestion = async (customPrompt?: string) => {
-    const promptToUse = customPrompt?.trim() || prompt.trim()
-    
-    if (!promptToUse) {
+    const promptToUse = customPrompt || prompt
+    if (!promptToUse.trim()) {
       toast({
-        title: "Prompt required",
+        title: "Info",
         description: "Please enter a prompt or use a quick suggestion",
-        variant: "default",
       })
       return
     }
 
     setLoading(true)
-    setSuggestion("") // Clear previous suggestion
-
     try {
       const response = await fetch("/api/ai/suggestions", {
         method: "POST",
@@ -54,31 +44,24 @@ export function AiSuggestionsPanel({ tasks }: AiSuggestionsPanelProps) {
         },
         body: JSON.stringify({
           prompt: promptToUse,
-          context: tasks.length > 0 
-            ? `Current tasks: ${tasks.map((t) => `${t.title} (${t.status})`).join(", ")}`
-            : "The user has no current tasks",
+          context: `Current tasks: ${tasks.map((t) => `${t.title} (${t.status})`).join(", ")}`,
         }),
       })
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`)
+      if (response.ok) {
+        const { suggestion: aiSuggestion } = await response.json()
+        setSuggestion(aiSuggestion)
+      } else {
+        toast({
+          title: "Error",
+          description: "Failed to get AI suggestion",
+          variant: "destructive",
+        })
       }
-
-      const data = await response.json()
-      
-      if (!data.suggestion) {
-        throw new Error("No suggestion returned from API")
-      }
-
-      setSuggestion(data.suggestion)
     } catch (error) {
-      console.error("Error fetching AI suggestion:", error)
-      setSuggestion("")
       toast({
         title: "Error",
-        description: error instanceof Error 
-          ? error.message 
-          : "Failed to get AI suggestion",
+        description: "Failed to get AI suggestion",
         variant: "destructive",
       })
     } finally {
@@ -86,21 +69,21 @@ export function AiSuggestionsPanel({ tasks }: AiSuggestionsPanelProps) {
     }
   }
 
-  const quickPrompts: QuickPrompt[] = [
+  const quickPrompts = [
     {
       icon: <Lightbulb className="h-4 w-4" />,
       text: "Suggest new tasks based on my current ones",
-      prompt: "Based on my current tasks, suggest 3 new related tasks that would help me be more productive. Include brief descriptions for each.",
+      prompt: "Based on my current tasks, suggest 3 new related tasks that would help me be more productive.",
     },
     {
       icon: <Target className="h-4 w-4" />,
       text: "Help prioritize my tasks",
-      prompt: "Analyze my current tasks and help me prioritize them. Which ones should I focus on first and why? Consider deadlines and importance.",
+      prompt: "Help me prioritize my current tasks. Which ones should I focus on first and why?",
     },
     {
       icon: <Calendar className="h-4 w-4" />,
       text: "Plan my week",
-      prompt: "Create a suggested weekly plan based on my current tasks. Include time estimates and recommend when to work on each task. Format as a schedule.",
+      prompt: "Help me create a weekly plan based on my current tasks. Suggest a schedule and timeline.",
     },
   ]
 
@@ -120,26 +103,10 @@ export function AiSuggestionsPanel({ tasks }: AiSuggestionsPanelProps) {
             value={prompt}
             onChange={(e) => setPrompt(e.target.value)}
             rows={3}
-            disabled={loading}
-            className="min-h-[100px]"
           />
-          <Button 
-            onClick={() => handleGetSuggestion()} 
-            disabled={loading || !prompt.trim()} 
-            className="w-full"
-            aria-label="Get AI suggestion"
-          >
-            {loading ? (
-              <>
-                <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                Processing...
-              </>
-            ) : (
-              <>
-                <Brain className="h-4 w-4 mr-2" />
-                Get AI Suggestion
-              </>
-            )}
+          <Button onClick={() => handleGetSuggestion()} disabled={loading || !prompt.trim()} className="w-full">
+            {loading ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Brain className="h-4 w-4 mr-2" />}
+            Get AI Suggestion
           </Button>
         </div>
 
@@ -147,16 +114,12 @@ export function AiSuggestionsPanel({ tasks }: AiSuggestionsPanelProps) {
           <p className="text-sm font-medium">Quick Suggestions:</p>
           {quickPrompts.map((item, index) => (
             <Button
-              key={`quick-prompt-${index}`}
+              key={index}
               variant="outline"
               size="sm"
-              className="w-full justify-start text-left h-auto p-3 hover:bg-accent/50"
-              onClick={() => {
-                setPrompt(item.prompt)
-                handleGetSuggestion(item.prompt)
-              }}
+              className="w-full justify-start text-left h-auto p-3"
+              onClick={() => handleGetSuggestion(item.prompt)}
               disabled={loading}
-              aria-label={item.text}
             >
               <div className="flex items-start gap-2">
                 {item.icon}
@@ -167,14 +130,14 @@ export function AiSuggestionsPanel({ tasks }: AiSuggestionsPanelProps) {
         </div>
 
         {suggestion && (
-          <div className="mt-4 p-3 bg-muted rounded-lg animate-fade-in">
+          <div className="mt-4 p-3 bg-muted rounded-lg">
             <p className="text-sm font-medium mb-2">AI Suggestion:</p>
             <p className="text-sm whitespace-pre-wrap">{suggestion}</p>
           </div>
         )}
 
         {tasks.length > 0 && (
-          <div className="mt-4 p-3 border rounded-lg bg-background/50">
+          <div className="mt-4 p-3 border rounded-lg">
             <p className="text-sm font-medium mb-2">Your Tasks Summary:</p>
             <div className="space-y-1">
               <p className="text-xs text-muted-foreground">
@@ -185,7 +148,7 @@ export function AiSuggestionsPanel({ tasks }: AiSuggestionsPanelProps) {
                 .filter((t) => t.status === "Open")
                 .slice(0, 3)
                 .map((task) => (
-                  <p key={`task-${task.id}`} className="text-xs truncate">
+                  <p key={task.id} className="text-xs truncate">
                     • {task.title}
                   </p>
                 ))}
@@ -201,3 +164,4 @@ export function AiSuggestionsPanel({ tasks }: AiSuggestionsPanelProps) {
     </Card>
   )
 }
+
